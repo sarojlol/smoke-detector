@@ -68,24 +68,46 @@ void loop(){
   static bool beep_flag;
   static unsigned long beep_delay;
   static bool beep_toggle;
+  static bool alart;
+  static bool alart_flag;
+  static bool message_flag;
+  static unsigned long alart_delay;
 
   //อ่านค่า sensor ทุกๆ 500ms
   if ((millis() - smoke_delay) > 500){
     smoke_value = analogRead(smoke_SensorPin); //อ่านค่าจาก sensor
-    if ((smoke_value > 550) && (!beep_flag)){ //ถ้าค่าควัญเกิน 650 ส่งข้อความ 1 ครั้งแล้ว ส่งเสียง
+    if ((smoke_value > 550) && (!beep_flag)){ //ถ้าค่าควัญเกิน 550 ส่งข้อความ 1 ครั้งแล้ว ส่งเสียง
       beep_flag = true;
       digitalWrite(buzzer_pin, LOW);
-      beep_toggle = true;
+      beep_toggle = false;
       beep_delay = millis();
-      Blynk.logEvent("smoke_detected");
+      alart = true;
+      message_flag = true;
+      //Blynk.logEvent("smoke_detected");
     }
 
-    else {//ถ้าไม่ ให้หยุดร้องปีดๆ
+    else if ((smoke_value < 150) && (beep_flag)) {//ถ้าไม่ ให้หยุดร้องปีดๆ
       digitalWrite(buzzer_pin, HIGH);
+      alart = false;
       beep_flag = false;
     }
     smoke_delay = millis();
-    Serial.println(smoke_value); //ไว้ดูค่าจาก sensor
+    //Serial.println(smoke_value); //ไว้ดูค่าจาก sensor
+  }
+
+  if (alart){
+    if (alart_flag){
+      if (message_flag){
+        Serial.println("ALART!!! ");
+        Blynk.logEvent("smoke_detected");
+        message_flag = false;
+      }
+      alart_delay = millis();
+      alart_flag = false;
+    }
+  }
+  if (((millis() - alart_delay) > 5000) &! alart_flag){
+    alart_flag = true;
   }
   
   //ปีดๆโดยไม่ใช้ delay
