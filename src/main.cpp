@@ -85,7 +85,7 @@ void loop(){
       beep_flag = false;
     }
     smoke_delay = millis();
-    //Serial.println(smoke_value); //ไว้ดูค่าจาก sensor
+    Serial.println(smoke_value); //ไว้ดูค่าจาก sensor
   }
   
   //ปีดๆโดยไม่ใช้ delay
