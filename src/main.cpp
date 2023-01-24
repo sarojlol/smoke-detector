@@ -3,9 +3,9 @@
 
 DHTesp dht;
 
-#define BLYNK_TEMPLATE_ID "TMPLLRFBwACC" //templet เอาจากแอป (ไม่เหมือนกัน)
-#define BLYNK_DEVICE_NAME "Smoke detector" //ชื่อ(ต้องเปลี่ยนในแอปด้วย)
-#define BLYNK_AUTH_TOKEN  "yAy4I3AEZfiw5hh09fPhcQk9ZwnFjnIu" //token เอาจากแอป (ไม่เหมือนกัน)
+#define BLYNK_TEMPLATE_ID "TMPLMhOiaFlC" //templet เอาจากแอป (ไม่เหมือนกัน)
+#define BLYNK_DEVICE_NAME "Smoke Detector" //ชื่อ(ต้องเปลี่ยนในแอปด้วย)
+#define BLYNK_AUTH_TOKEN  "Xs9IYWucRaC8nFWGMHKQy7mdZZkIzKme" //token เอาจากแอป (ไม่เหมือนกัน)
 
 #define BLYNK_PRINT Serial
 
@@ -69,10 +69,10 @@ void loop(){
   static unsigned long beep_delay;
   static bool beep_toggle;
 
-  //อ่านค่า sensor ทุกๆ 100ms
-  if ((millis() - smoke_delay) > 100){
+  //อ่านค่า sensor ทุกๆ 500ms
+  if ((millis() - smoke_delay) > 500){
     smoke_value = analogRead(smoke_SensorPin); //อ่านค่าจาก sensor
-    if ((smoke_value > 650) && (!beep_flag)){ //ถ้าค่าควัญเกิน 650 ส่งข้อความ 1 ครั้งแล้ว ส่งเสียง
+    if ((smoke_value > 550) && (!beep_flag)){ //ถ้าค่าควัญเกิน 650 ส่งข้อความ 1 ครั้งแล้ว ส่งเสียง
       beep_flag = true;
       digitalWrite(buzzer_pin, LOW);
       beep_toggle = true;
